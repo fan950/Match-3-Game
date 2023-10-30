@@ -483,7 +483,7 @@ ExplodeSpecial
 
 ElementRemove
 <details>
-아이스, 허니, 시럽을 폭파 시키기 위해 탐색하는 함수하는 함수
+아이스, 허니, 시럽을 폭파 시키기 위해 탐색하는 함수
 
 ```   
  public eElementType ElementRemove(Element element)
@@ -527,6 +527,65 @@ ElementRemove
         return eElementType.None;
     }
 
+
+```
+
+</details>
+
+
+
+***
+
+
+### 리스폰
+TileRespawn
+<details>
+폭파 후 타일을 재생성하는 함수
+
+```
+    public void TileRespawn()
+    {
+        if (InGameScene.instance.isEnd)
+        {
+            return;
+        }
+
+        int nRespawnIndex = lisRespawnX[0];
+
+        //1 ~ 6 기본타일
+        eTileType tileType = (eTileType)UnityEngine.Random.Range(1, 7);
+        Tile _tile = InGameScene.instance.tilePool.GetTile(tileType);
+        _tile.transform.SetParent(transform);
+
+        for (int i = 0; i < lisRespawnX.Count; ++i)
+        {
+            Tile _temp = GetTile(lisRespawnX[i], 0);
+            if (arrTileType[0, lisRespawnX[i]] != eTileType.None && _temp == null)
+            {
+                nRespawnIndex = lisRespawnX[i];
+                break;
+            }
+        }
+
+        _tile.gameObject.SetActive(false);
+        arrTile[0, nRespawnIndex] = _tile;
+        _tile.Init(nRespawnIndex, 0);
+        _tile.tileLine = eTileLine.Normal;
+        Vector2Int vec = new Vector2Int(0, nRespawnIndex);
+        _tile.transform.position = new Vector3(dicFixPos[vec].x, dicFixPos[vec].y + fSpacePos, 0);
+        _tile.AddNextPos(nRespawnIndex, 0, dicFixPos[vec]);
+        if (!dicTile.ContainsKey(_tile.gameObject))
+            dicTile.Add(_tile.gameObject, _tile);
+
+        while (true)
+        {
+            if (NextTile(_tile) == false)
+            {
+                break;
+            }
+        }
+        lisRespawnTile.Add(_tile);
+    }
 
 ```
 
