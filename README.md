@@ -118,6 +118,7 @@ MoveUpdate
         }
     }
 ```
+
 </details>
 
 
@@ -167,6 +168,8 @@ NextTile
 
 ApplyGravity
 <details> 
+
+    
 ```
     public IEnumerator ApplyGravity()
     {
@@ -289,5 +292,6 @@ ApplyGravity
 
         GravityCoro = null;
     }
-```    
+```
+
 </details>
