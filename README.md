@@ -411,7 +411,7 @@ Explode
 
 ExplodeSpecial
 <details>
-특수 타일의 주변을 폭파 시키기 위해 폭파 될 타일 탐색
+특수 타일의 주변을 폭파 시키기 위해 폭파 될 타일 탐색하는 함수
 
 
 ```
@@ -475,6 +475,58 @@ ExplodeSpecial
             }
         }
     }
+
+```
+
+</details>
+
+
+ElementRemove
+<details>
+아이스, 허니, 시럽을 폭파 시키기 위해 탐색하는 함수하는 함수
+
+```   
+ public eElementType ElementRemove(Element element)
+    {
+        if (element == null)
+            return eElementType.None;
+
+        if (IsIce(element.nPosX, element.nPosY))
+        {
+            lisElement_Ice.Remove(element);
+            arrElement[element.nPosY, element.nPosX] = null;
+            return eElementType.Ice;
+        }
+        else if (IsHoney(element.nPosX, element.nPosY))
+        {
+            lisElement_Honey.Remove(element);
+            arrElement[element.nPosY, element.nPosX] = null;
+            return eElementType.Honey;
+
+        }
+        else if (IsSyrup1(element.nPosX, element.nPosY))
+        {
+            lisElement_Syrup1.Remove(element);
+            arrElement[element.nPosY, element.nPosX] = null;
+            return eElementType.Syrup1;
+
+        }
+        else if (IsSyrup2(element.nPosX, element.nPosY))
+        {
+            lisElement_Syrup2.Remove(element);
+
+            Element _element = InGameScene.instance.elementPool.GetElement(eElementType.Syrup1);
+
+            _element.Init(element.nPosX, element.nPosY);
+            _element.transform.position = element.transform.position;
+            _element.transform.SetParent(transform);
+            lisElement_Syrup1.Add(_element);
+            arrElement[_element.nPosY, _element.nPosX] = _element;
+            return eElementType.Syrup2;
+        }
+        return eElementType.None;
+    }
+
 
 ```
 
