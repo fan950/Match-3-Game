@@ -7,7 +7,7 @@ Match 3 퍼즐게임 개발 포트폴리오
 ### 목차
 - 이동
 - 폭발
-- 리스폰
+- 생성
 
 
 
@@ -537,7 +537,7 @@ ElementRemove
 ***
 
 
-### 리스폰
+### 생성
 TileRespawn
 <details>
 폭파 후 타일을 재생성하는 함수
@@ -585,6 +585,99 @@ TileRespawn
             }
         }
         lisRespawnTile.Add(_tile);
+    }
+
+```
+
+</details>
+
+
+SpecialTileRespawn
+<details>
+특수 타일을 생성시키는 함수
+
+```
+
+public void SpecialTileRespawn(Tile tile, SearchMatch searchMatch)
+    {
+        if (lisExplodeTile.Find(_ => _.tileType == eTileType.ColorBomb))
+            return;
+
+        Tile _special = null;
+        TilePool tilePool = InGameScene.instance.tilePool;
+
+        if (searchMatch.nTileCount >= 7)
+        {
+            _special = tilePool.GetAllTile(tile.eTileColor);
+        }
+        else if (searchMatch.nTileCount >= 6)
+        {
+            _special = tilePool.GetTile(eTileType.ColorBomb);
+        }
+        else if (searchMatch.nTileCount >= 5)
+        {
+            _special = tilePool.GetPackTile(tile.eTileColor);
+        }
+        else if (searchMatch.nTileCount >= 4)
+        {
+            if (searchMatch.isWight)
+            {
+                _special = tilePool.GetStraightTile(tile.eTileColor, eTileLine.Horizontal);
+            }
+            else
+            {
+                _special = tilePool.GetStraightTile(tile.eTileColor, eTileLine.Vertical);
+            }
+        }
+
+        if (_special == null)
+            return;
+        _special.transform.SetParent(transform);
+        _special.Init(tile.nPosX, tile.nPosY);
+        _special.transform.position = tile.transform.position;
+        if (!dicTile.ContainsKey(_special.gameObject))
+            dicTile.Add(_special.gameObject, _special);
+
+        arrTile[tile.nPosY, tile.nPosX] = _special;
+
+        tile.Die(arrElement[tile.nPosY, tile.nPosX]);
+        ElementRemove(arrElement[tile.nPosY, tile.nPosX]);
+
+        lisEmptyPos.Add(new Vector2Int(tile.nPosX, tile.nPosY));
+
+        if (dicTile.ContainsKey(tile.gameObject))
+            dicTile.Remove(tile.gameObject);
+        lisExplodeTile.Remove(tile);
+    }
+
+
+```
+
+</details>
+
+
+ObstacleTileRespawn
+<details>
+장애물을 생성시키는 함수
+
+```
+
+ public void ObstacleTileRespawn(Tile tile, eTileType tileType)
+    {
+        Tile _obstacle = InGameScene.instance.tilePool.GetTile(tileType);
+
+        _obstacle.transform.SetParent(transform);
+        _obstacle.Init(tile.nPosX, tile.nPosY);
+        _obstacle.transform.position = tile.transform.position;
+        if (!dicTile.ContainsKey(_obstacle.gameObject))
+            dicTile.Add(_obstacle.gameObject, _obstacle);
+
+        arrTile[tile.nPosY, tile.nPosX] = _obstacle;
+
+        CallSpawnFx(tile);
+
+        if (dicTile.ContainsKey(tile.gameObject))
+            dicTile.Remove(tile.gameObject);
     }
 
 ```
