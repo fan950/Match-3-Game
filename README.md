@@ -19,7 +19,7 @@ Match 3 퍼즐게임 개발 포트폴리오
 MoveUpdate
 <details> 
     이동 할 타일을 lisTileMove 리스트에 넣고 이동하고 성공, 실패를 판단하는 코루틴
-
+    
 ```
    public IEnumerator MoveUpdate()
     {
@@ -316,7 +316,7 @@ Explode
 매치된 타일을 폭발시키는 함수
 
 
-    ```
+ ```
  public void Explode()
     {
         if (InGameScene.instance.isEnd)
@@ -405,5 +405,5 @@ Explode
     }
 
     
-    ```
+```
 </details>
