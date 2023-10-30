@@ -407,3 +407,75 @@ Explode
     
 ```
 </details>
+
+
+ExplodeSpecial
+<details>
+특수 타일의 주변을 탐색하여 특수 타일의 조건에 맞는 타일을 탐색하는 함수
+
+
+```
+   public void ExplodeSpecial()
+    {
+        List<Tile> _tempTile = new List<Tile>();
+        for (int i = 0; i < lisExplodeTile.Count; ++i)
+        {
+            switch (lisExplodeTile[i].tileLine)
+            {
+                case eTileLine.Horizontal:
+                    for (int j = 0; j < arrTile.GetLength(1); ++j)
+                    {
+                        if (GetTile(j, lisExplodeTile[i].nPosY) != null && !lisExplodeTile.Contains(arrTile[lisExplodeTile[i].nPosY, j]))
+                            lisExplodeTile.Add(arrTile[lisExplodeTile[i].nPosY, j]);
+                    }
+                    break;
+                case eTileLine.Vertical:
+                    for (int j = 0; j < arrTile.GetLength(0); ++j)
+                    {
+                        if (GetTile(lisExplodeTile[i].nPosX, j) != null && !lisExplodeTile.Contains(arrTile[j, lisExplodeTile[i].nPosX]))
+                            lisExplodeTile.Add(arrTile[j, lisExplodeTile[i].nPosX]);
+                    }
+                    break;
+                case eTileLine.Pack:
+                    List<Tile> _temp = new List<Tile>();
+                    int _nPosX = lisExplodeTile[i].nPosX;
+                    int _nPosY = lisExplodeTile[i].nPosY;
+
+                    _temp.Add(GetTile(_nPosX - 1, _nPosY - 1));
+                    _temp.Add(GetTile(_nPosX, _nPosY - 1));
+                    _temp.Add(GetTile(_nPosX + 1, _nPosY - 1));
+                    _temp.Add(GetTile(_nPosX - 1, _nPosY));
+                    _temp.Add(GetTile(_nPosX + 1, _nPosY));
+                    _temp.Add(GetTile(_nPosX - 1, _nPosY + 1));
+                    _temp.Add(GetTile(_nPosX, _nPosY + 1));
+                    _temp.Add(GetTile(_nPosX + 1, _nPosY + 1));
+
+                    for (int w = 0; w < _temp.Count; ++w)
+                    {
+                        if (_temp[w] != null)
+                        {
+                            if (!lisExplodeTile.Contains(_temp[w]))
+                                lisExplodeTile.Add(_temp[w]);
+                        }
+                    }
+                    break;
+                case eTileLine.All:
+                    if (lisExplodeTile[i].tileLine == eTileLine.All)
+                    {
+                        foreach (KeyValuePair<GameObject, Tile> tile in dicTile)
+                        {
+                            if (tile.Value.eTileColor == lisExplodeTile[i].eTileColor)
+                            {
+                                if (!lisExplodeTile.Contains(tile.Value))
+                                    lisExplodeTile.Add(tile.Value);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+```
+
+</details>
