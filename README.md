@@ -20,7 +20,7 @@ MoveUpdate
 <details> 
     이동 할 타일을 lisTileMove 리스트에 넣고 이동하고 성공, 실패를 판단하는 코루틴
 
-```    
+```
    public IEnumerator MoveUpdate()
     {
         while (true)
@@ -314,6 +314,7 @@ ApplyGravity
 Explode
 <details> 
 매치된 타일을 폭발시키는 함수
+
 
     ```
  public void Explode()
