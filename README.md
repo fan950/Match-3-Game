@@ -312,3 +312,97 @@ ApplyGravity
 
 ### 폭발
 Explode
+<details> 
+매치된 타일을 폭발시키는 함수
+
+    ```
+ public void Explode()
+    {
+        if (InGameScene.instance.isEnd)
+            return;
+
+        isPlayAni = true;
+
+        fSupportTime = 0;
+
+        lisEmptyPos.Clear();
+        ExplodeObstacle();
+        ExplodeSpecial();
+        for (int i = 0; i < lisExplodeTile.Count; ++i)
+        {
+            //특수 블록 제작
+            if (dicSpecialList.ContainsKey(lisExplodeTile[i].tileType))
+            {
+                SearchMatch _searchMatch = dicSpecialList[lisExplodeTile[i].tileType];
+                SpecialTileRespawn(lisExplodeTile[i], _searchMatch);
+
+                dicSpecialList.Remove(lisExplodeTile[i].tileType);
+            }
+
+            Element _element = arrElement[lisExplodeTile[i].nPosY, lisExplodeTile[i].nPosX];
+            lisExplodeTile[i].Die(arrElement[lisExplodeTile[i].nPosY, lisExplodeTile[i].nPosX]);
+            eElementType elementType = ElementRemove(arrElement[lisExplodeTile[i].nPosY, lisExplodeTile[i].nPosX]);
+
+            InGameScene.instance.CheckGoalTile(lisExplodeTile[i], _element);
+
+            arrTile[lisExplodeTile[i].nPosY, lisExplodeTile[i].nPosX] = null;
+            lisEmptyPos.Add(new Vector2Int(lisExplodeTile[i].nPosX, lisExplodeTile[i].nPosY));
+
+            if (dicTile.ContainsKey(lisExplodeTile[i].gameObject))
+                dicTile.Remove(lisExplodeTile[i].gameObject);
+
+            if (elementType == eElementType.None)
+            {
+                switch (lisExplodeTile[i].tileType)
+                {
+                    case eTileType.Chocolate:
+                        SoundsManager.Instance.Play(sChocolateSoundsPath);
+                        break;
+                    case eTileType.Marshmallow:
+                        SoundsManager.Instance.Play(sMarshmallowSoundsPath);
+                        break;
+                    case eTileType.ColorBomb:
+                        SoundsManager.Instance.Play(sColorBombSoundsPath);
+                        break;
+                    default:
+                        SoundsManager.Instance.Play(sExplodeSoundsPath);
+                        break;
+                }
+            }
+            else
+            {
+                switch (elementType)
+                {
+                    case eElementType.Honey:
+                        SoundsManager.Instance.Play(sHoneySoundsPath);
+                        break;
+                    case eElementType.Ice:
+                        SoundsManager.Instance.Play(sIceSoundsPath);
+                        break;
+                    case eElementType.Syrup1:
+                    case eElementType.Syrup2:
+                        SoundsManager.Instance.Play(sSyrupSoundsPath);
+                        break;
+                }
+            }
+        }
+
+        lisEmptyPos = lisEmptyPos.OrderBy(_ => _.x).ThenByDescending(_ => _.y).ToList();
+
+        nScore += lisExplodeTile.Count * nBaseScore + (nCombo * nComboScore);
+        InGameScene.instance.SetScore(nScore, nCombo);
+
+        lisExplodeTile.Clear();
+
+        if (GravityCoro != null)
+            StopCoroutine(GravityCoro);
+        GravityCoro = StartCoroutine(ApplyGravity());
+
+        dicSpecialList.Clear();
+        if (lisElement_Honey.Count > 0)
+            ChangeHoney();
+    }
+
+    
+    ```
+</details>
