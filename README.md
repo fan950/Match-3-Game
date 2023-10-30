@@ -118,3 +118,45 @@ MoveUpdate
     }
 ```
 </details>
+
+
+NextTile
+<details> 
+    타일의 이동 경로를 정하는 함수 => 아래, 오른쪽 아래, 왼쪽 아래 순서
+```
+   public bool NextTile(Tile tile)
+    {
+        Tile _tempTile = tile;
+
+        int _nNextY = tile.nPosY + 1;
+        int _nLeftX = tile.nPosX - 1;
+        int _nRightX = tile.nPosX + 1;
+
+        if (arrTile.GetLength(0) <= _nNextY)
+            return false;
+
+        if (IsMoveCenter(tile.nPosX, _nNextY))
+        {
+            arrTile[_tempTile.nPosY, _tempTile.nPosX] = null;
+            arrTile[_nNextY, _tempTile.nPosX] = _tempTile;
+            arrTile[_nNextY, _tempTile.nPosX].AddNextPos(_tempTile.nPosX, _nNextY, dicFixPos[new Vector2Int(_nNextY, _tempTile.nPosX)]);
+            return true;
+        }
+        else if (IsMoveRight(_nRightX, _nNextY) && GetTile(_nRightX, _tempTile.nPosY) == null)
+        {
+            arrTile[_tempTile.nPosY, _tempTile.nPosX] = null;
+            arrTile[_nNextY, _nRightX] = _tempTile;
+            arrTile[_nNextY, _nRightX].AddNextPos(_nRightX, _nNextY, dicFixPos[new Vector2Int(_nNextY, _nRightX)]);
+            return true;
+        }
+        else if (IsMoveLeft(_nLeftX, _nNextY) && GetTile(_nLeftX, _tempTile.nPosY) == null)
+        {
+            arrTile[_tempTile.nPosY, _tempTile.nPosX] = null;
+            arrTile[_nNextY, _nLeftX] = _tempTile;
+            arrTile[_nNextY, _nLeftX].AddNextPos(_nLeftX, _nNextY, dicFixPos[new Vector2Int(_nNextY, _nLeftX)]);
+            return true;
+        }
+
+        return false;
+    }
+    ```
