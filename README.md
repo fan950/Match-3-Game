@@ -416,7 +416,7 @@ ExplodeSpecial
 
 ```
    public void ExplodeSpecial()
-    {
+   {
         List<Tile> _tempTile = new List<Tile>();
         for (int i = 0; i < lisExplodeTile.Count; ++i)
         {
