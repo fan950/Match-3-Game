@@ -7,7 +7,8 @@ Match 3 퍼즐게임 개발 포트폴리오
 - 리스폰
 
 ## 이동
-<details> DragMatch
+DragMatch <details>DragMatch
+DragMatch
     
 ```    
     //타일의 이동 후 해당 타일과 같은 타일 찾는 함수
