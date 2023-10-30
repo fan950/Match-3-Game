@@ -1,12 +1,13 @@
 # Match-3-Game
 Match 3 퍼즐게임 개발 포트폴리오
 
-## 목차
+## GameBoard.cs
+### 목차
 - 이동
 - 파괴
 - 리스폰
 
-## 이동
+### 이동
 MoveUpdate
 <details> 
     이동 할 타일을 lisTileMove 리스트에 넣고 이동하고 성공, 실패를 판단하는 코루틴
