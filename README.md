@@ -1,13 +1,18 @@
 # Match-3-Game
 Match 3 퍼즐게임 개발 포트폴리오
 
+
+
 ## GameBoard.cs
 ### 목차
 - 이동
-- 파괴
+- 폭발
 - 리스폰
 
+
+
 ***
+
 
 
 ### 이동
@@ -299,3 +304,11 @@ ApplyGravity
 ```
 
 </details>
+
+
+
+***
+
+
+### 폭발
+Explode
