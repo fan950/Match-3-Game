@@ -599,7 +599,7 @@ SpecialTileRespawn
 ```
 
 public void SpecialTileRespawn(Tile tile, SearchMatch searchMatch)
-    {
+{
         if (lisExplodeTile.Find(_ => _.tileType == eTileType.ColorBomb))
             return;
 
@@ -648,7 +648,7 @@ public void SpecialTileRespawn(Tile tile, SearchMatch searchMatch)
         if (dicTile.ContainsKey(tile.gameObject))
             dicTile.Remove(tile.gameObject);
         lisExplodeTile.Remove(tile);
-    }
+}
 
 
 ```
@@ -663,7 +663,7 @@ ObstacleTileRespawn
 ```
 
  public void ObstacleTileRespawn(Tile tile, eTileType tileType)
-    {
+{
         Tile _obstacle = InGameScene.instance.tilePool.GetTile(tileType);
 
         _obstacle.transform.SetParent(transform);
@@ -678,7 +678,7 @@ ObstacleTileRespawn
 
         if (dicTile.ContainsKey(tile.gameObject))
             dicTile.Remove(tile.gameObject);
-    }
+}
 
 ```
 
