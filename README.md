@@ -1,7 +1,8 @@
 # Match-3-Game
 Match 3 Game Scripts
 
-    using System.Collections;
+```
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -1845,3 +1846,4 @@ public class GameBoard : MonoBehaviour
         tile.DieAction();
     }
 }
+```
