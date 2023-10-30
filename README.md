@@ -225,7 +225,7 @@ ApplyGravity
             {
                 bool _isAdd = false;
                 Tile _tempTile = GetTile(j, i);
-                //위에 아무도 없는것 부터 시작
+
                 if (GetTile(j, i - 1) == null && _tempTile != null && arrElement[i, j] == null)
                 {
                     while (true)
