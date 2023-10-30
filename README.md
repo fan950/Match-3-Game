@@ -317,7 +317,7 @@ Explode
 
 
  ```
- public void Explode()
+    public void Explode()
     {
         if (InGameScene.instance.isEnd)
             return;
