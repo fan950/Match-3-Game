@@ -63,8 +63,8 @@ public class InGameScene : MonoBehaviour
         isPuase = true;
         uiApplyItemBg.SetActive(false);
 
-        //var jsonText = Resources.Load<TextAsset>("Level/" + GameManager.Instance.nSelectLevel);
-       var jsonText = Resources.Load<TextAsset>("Level/" + 11);
+        var jsonText = Resources.Load<TextAsset>("Level/" + GameManager.Instance.nSelectLevel);
+      //  var jsonText = Resources.Load<TextAsset>("Level/" + GameManager.Instance.nSelectLevel);
         level = JsonUtility.FromJson<Level>(jsonText.ToString());
 
         for (int i = 0; i < level.lisGoal.Count; ++i)

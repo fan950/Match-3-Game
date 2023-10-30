@@ -228,7 +228,7 @@ public class GameBoard : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            isLose = true;
+            ResetTile();
         }
         if (InGameScene.instance.isPuase)
             return;
@@ -599,8 +599,11 @@ public class GameBoard : MonoBehaviour
             {
                 bool _isAdd = false;
                 Tile _tempTile = GetTile(j, i);
-               
-                if (GetTile(j, i - 1) == null && _tempTile != null && arrElement[i, j] == null)
+
+                //if (((j - 1 >= 0 && j + 1 < arrTileType.GetLength(1) &&
+                //    (arrTileType[i, j - 1] == eTileType.None || arrTileType[i, j + 1] == eTileType.None)) ||
+                //    GetTile(j, i - 1) == null) &&
+                if (_tempTile != null && arrElement[i, j] == null)
                 {
                     while (true)
                     {
@@ -848,8 +851,6 @@ public class GameBoard : MonoBehaviour
             }
         }
         SoundsManager.Instance.Play(sChocolateRespawnSoundsPath);
-
-
     }
     //허니에 있는 타일을 랜덤으로 변경
 
@@ -868,12 +869,22 @@ public class GameBoard : MonoBehaviour
                 }
             }
 
+            if (_lisIndex.Count <= 0)
+            {
+                return;
+            }
+
             int _nRandom = UnityEngine.Random.Range(0, _lisIndex.Count);
 
             int _nPosX = lisElement_Honey[_lisIndex[_nRandom]].nPosX;
             int _nPosY = lisElement_Honey[_lisIndex[_nRandom]].nPosY;
 
             Tile _mainTile = GetTile(_nPosX, _nPosY);
+
+            if (_mainTile == null)
+            {
+                return;
+            }
 
             for (int i = 1; i < (int)eTileType.RandomCandy; ++i)
             {
@@ -911,11 +922,13 @@ public class GameBoard : MonoBehaviour
     {
         List<eTileColor> _lisColor = new List<eTileColor>();
         List<Tile> _lisTile = new List<Tile>();
+
         foreach (KeyValuePair<GameObject, Tile> temp in dicTile)
         {
-            if (temp.Value.tileLine == eTileLine.Normal && !IsIce(temp.Value.nPosX, temp.Value.nPosY))
+            if (temp.Value.tileLine == eTileLine.Normal)
                 _lisTile.Add(temp.Value);
         }
+
         _lisTile = _lisTile.OrderBy(_ => _.nPosY).ThenBy(_ => _.nPosX).ToList();
         for (int w = 1; w < (int)eTileColor.Max; ++w)
         {
@@ -1503,19 +1516,22 @@ public class GameBoard : MonoBehaviour
                         if ((_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY)) ||
                             (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY)))
                         {
-                            _tile_1.animator.SetTrigger("SuggestedMatch");
-                            lisSupportTile.Add(_tile_1);
-                            if (_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY))
+                            if (IsMoveTile(_tile_1.nPosX, _tile_1.nPosY))
                             {
-                                _sub_1.animator.SetTrigger("SuggestedMatch");
-                                lisSupportTile.Add(_sub_1);
+                                _tile_1.animator.SetTrigger("SuggestedMatch");
+                                lisSupportTile.Add(_tile_1);
+                                if (_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY))
+                                {
+                                    _sub_1.animator.SetTrigger("SuggestedMatch");
+                                    lisSupportTile.Add(_sub_1);
+                                }
+                                else if (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY))
+                                {
+                                    _sub_2.animator.SetTrigger("SuggestedMatch");
+                                    lisSupportTile.Add(_sub_2);
+                                }
+                                _isFind = true;
                             }
-                            else if (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY))
-                            {
-                                _sub_2.animator.SetTrigger("SuggestedMatch");
-                                lisSupportTile.Add(_sub_2);
-                            }
-                            _isFind = true;
                         }
                     }
                     else if (_tile_1 != null && _tile_1.eTileColor == GetTile(j, i).eTileColor &&
@@ -1532,26 +1548,29 @@ public class GameBoard : MonoBehaviour
                             (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY)) ||
                             (_sub_3 != null && _sub_3.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_3.nPosX, _sub_3.nPosY)))
                         {
-                            _tile_2.animator.SetTrigger("SuggestedMatch");
-                            lisSupportTile.Add(_tile_2);
+                            if (IsMoveTile(_tile_2.nPosX, _tile_2.nPosY))
+                            {
+                                _tile_2.animator.SetTrigger("SuggestedMatch");
+                                lisSupportTile.Add(_tile_2);
 
-                            if (_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY))
-                            {
-                                _sub_1.animator.SetTrigger("SuggestedMatch");
-                                lisSupportTile.Add(_sub_1);
-                            }
-                            else if (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY))
-                            {
-                                _sub_2.animator.SetTrigger("SuggestedMatch");
-                                lisSupportTile.Add(_sub_2);
-                            }
-                            else if (_sub_3 != null && _sub_3.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_3.nPosX, _sub_3.nPosY))
-                            {
-                                _sub_3.animator.SetTrigger("SuggestedMatch");
-                                lisSupportTile.Add(_sub_3);
-                            }
+                                if (_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY))
+                                {
+                                    _sub_1.animator.SetTrigger("SuggestedMatch");
+                                    lisSupportTile.Add(_sub_1);
+                                }
+                                else if (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY))
+                                {
+                                    _sub_2.animator.SetTrigger("SuggestedMatch");
+                                    lisSupportTile.Add(_sub_2);
+                                }
+                                else if (_sub_3 != null && _sub_3.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_3.nPosX, _sub_3.nPosY))
+                                {
+                                    _sub_3.animator.SetTrigger("SuggestedMatch");
+                                    lisSupportTile.Add(_sub_3);
+                                }
 
-                            _isFind = true;
+                                _isFind = true;
+                            }
                         }
                     }
 
@@ -1586,20 +1605,23 @@ public class GameBoard : MonoBehaviour
                             if ((_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY)) ||
                                 (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY)))
                             {
-                                _tile_1.animator.SetTrigger("SuggestedMatch");
-                                lisSupportTile.Add(_tile_1);
+                                if (IsMoveTile(_tile_1.nPosX, _tile_1.nPosY))
+                                {
+                                    _tile_1.animator.SetTrigger("SuggestedMatch");
+                                    lisSupportTile.Add(_tile_1);
 
-                                if (_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY))
-                                {
-                                    _sub_1.animator.SetTrigger("SuggestedMatch");
-                                    lisSupportTile.Add(_sub_1);
+                                    if (_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY))
+                                    {
+                                        _sub_1.animator.SetTrigger("SuggestedMatch");
+                                        lisSupportTile.Add(_sub_1);
+                                    }
+                                    else if (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY))
+                                    {
+                                        _sub_2.animator.SetTrigger("SuggestedMatch");
+                                        lisSupportTile.Add(_sub_2);
+                                    }
+                                    _isFind = true;
                                 }
-                                else if (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY))
-                                {
-                                    _sub_2.animator.SetTrigger("SuggestedMatch");
-                                    lisSupportTile.Add(_sub_2);
-                                }
-                                _isFind = true;
                             }
                         }
                         else if (_tile_1 != null && _tile_1.eTileColor == GetTile(j, i).eTileColor &&
@@ -1616,26 +1638,29 @@ public class GameBoard : MonoBehaviour
                                 (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY)) ||
                                 (_sub_3 != null && _sub_3.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_3.nPosX, _sub_3.nPosY)))
                             {
-                                _tile_2.animator.SetTrigger("SuggestedMatch");
-                                lisSupportTile.Add(_tile_2);
+                                if (IsMoveTile(_tile_2.nPosX, _tile_2.nPosY))
+                                {
+                                    _tile_2.animator.SetTrigger("SuggestedMatch");
+                                    lisSupportTile.Add(_tile_2);
 
-                                if (_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY))
-                                {
-                                    _sub_1.animator.SetTrigger("SuggestedMatch");
-                                    lisSupportTile.Add(_sub_1);
-                                }
-                                else if (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY))
-                                {
-                                    _sub_2.animator.SetTrigger("SuggestedMatch");
-                                    lisSupportTile.Add(_sub_2);
-                                }
-                                else if (_sub_3 != null && _sub_3.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_3.nPosX, _sub_3.nPosY))
-                                {
-                                    _sub_3.animator.SetTrigger("SuggestedMatch");
-                                    lisSupportTile.Add(_sub_3);
-                                }
+                                    if (_sub_1 != null && _sub_1.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_1.nPosX, _sub_1.nPosY))
+                                    {
+                                        _sub_1.animator.SetTrigger("SuggestedMatch");
+                                        lisSupportTile.Add(_sub_1);
+                                    }
+                                    else if (_sub_2 != null && _sub_2.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_2.nPosX, _sub_2.nPosY))
+                                    {
+                                        _sub_2.animator.SetTrigger("SuggestedMatch");
+                                        lisSupportTile.Add(_sub_2);
+                                    }
+                                    else if (_sub_3 != null && _sub_3.eTileColor == GetTile(j, i).eTileColor && IsMoveTile(_sub_3.nPosX, _sub_3.nPosY))
+                                    {
+                                        _sub_3.animator.SetTrigger("SuggestedMatch");
+                                        lisSupportTile.Add(_sub_3);
+                                    }
 
-                                _isFind = true;
+                                    _isFind = true;
+                                }
                             }
                         }
 
