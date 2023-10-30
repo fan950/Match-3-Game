@@ -162,3 +162,132 @@ NextTile
         return false;
     }
 ```
+</details>
+
+
+ApplyGravity
+<details> 
+```
+    public IEnumerator ApplyGravity()
+    {
+        if (InGameScene.instance.isEnd)
+        {
+            StopCoroutine(GravityCoro);
+        }
+        SupportReset();
+        List<Tile> _lisTemp = new List<Tile>();
+
+        yield return applyGravityWait;
+
+        nEmptyCount = 0;
+
+        for (int i = 0; i < lisEmptyPos.Count; ++i)
+        {
+            for (int j = lisEmptyPos[i].y; j >= 0; --j)
+            {
+                Tile _tempTile = GetTile(lisEmptyPos[i].x, j);
+                if (_tempTile != null && (arrElement[j, lisEmptyPos[i].x] == null || arrElement[j, lisEmptyPos[i].x].elementType != eElementType.Ice))
+                {
+                    bool _isMove = false;
+                    while (true)
+                    {
+                        int _nNextY = _tempTile.nPosY + 1;
+                        if (IsMoveCenter(_tempTile.nPosX, _nNextY))
+                        {
+                            arrTile[_tempTile.nPosY, _tempTile.nPosX] = null;
+                            arrTile[_nNextY, _tempTile.nPosX] = _tempTile;
+                            arrTile[_nNextY, _tempTile.nPosX].AddNextPos(_tempTile.nPosX, _nNextY, dicFixPos[new Vector2Int(_nNextY, _tempTile.nPosX)]);
+
+                            _isMove = true;
+                        }
+                        else
+                        {
+                            if (_isMove)
+                            {
+                                if (!lisTileMove.Contains(_tempTile))
+                                    lisTileMove.Add(_tempTile);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = arrTile.GetLength(0) - 1; i >= 0; --i)
+        {
+            for (int j = 0; j < arrTile.GetLength(1); ++j)
+            {
+                bool _isAdd = false;
+                Tile _tempTile = GetTile(j, i);
+                //위에 아무도 없는것 부터 시작
+                if (GetTile(j, i - 1) == null && _tempTile != null && arrElement[i, j] == null)
+                {
+                    while (true)
+                    {
+                        if (NextTile(_tempTile) == false)
+                        {
+                            break;
+                        }
+                        _isAdd = true;
+                    }
+
+                    if (_isAdd)
+                    {
+                        if (!_lisTemp.Contains(_tempTile))
+                            _lisTemp.Add(_tempTile);
+                    }
+                }
+            }
+        }
+
+        if (_lisTemp.Count > 0)
+        {
+            yield return StartCoroutine(DelayAddTile(_lisTemp));
+        }
+
+        if (lisElement_Ice.Count > 0)
+        {
+            for (int i = 0; i < lisElement_Ice.Count; ++i)
+            {
+                for (int j = lisElement_Ice[i].nPosY + 1; j < arrTileType.GetLength(0); ++j)
+                {
+                    if (j < arrTileType.GetLength(0) && arrTileType[j, lisElement_Ice[i].nPosX] != eTileType.None && GetTile(lisElement_Ice[i].nPosX, j) == null && !IsIce(lisElement_Ice[i].nPosX, j))
+                    {
+                        ++nEmptyCount;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        int _nTileCount = nTileMax - dicTile.Count - nEmptyCount;
+
+        for (int i = 0; i < _nTileCount; ++i)
+        {
+            TileRespawn();
+        }
+
+        for (int i = 0; i < lisRespawnTile.Count; ++i)
+        {
+            if (lisEmptyPos.Count == 0)
+                break;
+            yield return respawnWait;
+            lisRespawnTile[i].gameObject.SetActive(true);
+            lisTileMove.Add(lisRespawnTile[i]);
+        }
+        lisRespawnTile.Clear();
+
+        if (level.nMove <= 0)
+        {
+            isLose = true;
+        }
+
+        GravityCoro = null;
+    }
+```    
+</details>
