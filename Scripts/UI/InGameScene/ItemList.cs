@@ -20,6 +20,25 @@ public class ItemList : MonoBehaviour
 
     public void SetAppltItem(eItemType itemType)
     {
+        switch (itemType)
+        {
+            case eItemType.Lollipop:
+                if (SaveManager.Instance.localGameData.nLollipop <= 0)
+                    return;
+                break;
+            case eItemType.All:
+                if (SaveManager.Instance.localGameData.nAll <= 0)
+                    return;
+                break;
+            case eItemType.Switch:
+                if (SaveManager.Instance.localGameData.nSwitch <= 0)
+                    return;
+                break;
+            case eItemType.ColorBomb:
+                if (SaveManager.Instance.localGameData.nColorBomb <= 0)
+                    return;
+                break;
+        }
         this.itemType = itemType;
         InGameScene.instance.ApplyItemMode();
     }
