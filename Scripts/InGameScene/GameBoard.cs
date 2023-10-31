@@ -215,7 +215,7 @@ public class GameBoard : MonoBehaviour
         //플립과 다른 기기 구분
         if (Screen.width * 1.0f / Screen.height <= 0.37f)
         {
-            Camera.main.orthographicSize = level.nWidth * 0.65f;
+            Camera.main.orthographicSize = level.nWidth * 2.125f;
         }
         else
         {
