@@ -27,7 +27,7 @@ https://www.youtube.com/watch?v=AGMGpd-L96o
 
 ## GameBoard.cs
 
-인게임에서 중요 스크립트로서 간략하게 함수 및 코루틴의 기능을 설명
+인게임의 중요 스크립트이며 간략하게 함수 및 코루틴의 설명
 
 
 ### 기능
