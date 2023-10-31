@@ -11,7 +11,7 @@ public class UITilePool : MonoBehaviour
     [SerializeField] private ObjectPool UITile_Pool;
     private Dictionary<GameObject, Image> dicImage = new Dictionary<GameObject, Image>();
 
-    private const float fMoveSpeed = 28;
+    private const float fMoveSpeed = 20;
     private const float fSizeUpSpeed = 6;
     private const float fSizeDownSpeed = 2;
 
