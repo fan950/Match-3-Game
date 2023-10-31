@@ -211,9 +211,9 @@ public class GameBoard : MonoBehaviour
         nTileMax = dicTile.Count;
 
         float _fBaseSzie = 1.5f;
-        float _fSmallSzie = 2.5f;
+        float _fSmallSzie = 2.125f;
         Camera.main.transform.position = new Vector3(_fCameraMaxX * 0.5f, _fCameraMinY * 0.5f, -10);
-        if (Screen.width * 1.0f / Screen.height <= 0.37f)
+        if (Screen.width * 1.0f / Screen.height <= 0.40f)
         {
             Camera.main.orthographicSize = level.nWidth * _fSmallSzie;
         }
