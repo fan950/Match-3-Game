@@ -210,16 +210,16 @@ public class GameBoard : MonoBehaviour
         }
         nTileMax = dicTile.Count;
 
-        //오브젝트 카메라 조정
+        float _fBaseSzie = 1.5f;
+        float _fSmallSzie = 2.5f;
         Camera.main.transform.position = new Vector3(_fCameraMaxX * 0.5f, _fCameraMinY * 0.5f, -10);
-        //플립과 다른 기기 구분
         if (Screen.width * 1.0f / Screen.height <= 0.37f)
         {
-            Camera.main.orthographicSize = level.nWidth * 2.125f;
+            Camera.main.orthographicSize = level.nWidth * _fSmallSzie;
         }
         else
         {
-            Camera.main.orthographicSize = level.nWidth * 1.5f;
+            Camera.main.orthographicSize = level.nWidth * _fBaseSzie;
         }
 
         StartCoroutine(MoveUpdate());
