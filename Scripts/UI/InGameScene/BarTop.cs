@@ -48,7 +48,7 @@ public class BarTop : MonoBehaviour
             else
                 spriteName = level.lisGoal[i].elementType.ToString();
 
-            goalSignSlot.Init(UIManager.Instance.GetSprite(eAtlasType.Tile, spriteName), level.lisGoal[i].nCount, new Vector2(90, 90));
+            goalSignSlot.Init(UIManager.Instance.GetSprite(eAtlasType.Tile, spriteName), level.lisGoal[i].nCount,1.5f);
             dicGoalSignSlot.Add(level.lisGoal[i], goalSignSlot);
         }
 

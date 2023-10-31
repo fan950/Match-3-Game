@@ -7,9 +7,9 @@ public class GoalSignSlot : MonoBehaviour
 {
     public Image iconImg;
     public Text countTxt;
-    public void Init(Sprite sprite, int count, Vector2 imgSize, bool isAll = false)
+    public void Init(Sprite sprite, int count, float fSize = 1.0f, bool isAll = false)
     {
-        iconImg.rectTransform.sizeDelta = imgSize;
+        transform.localScale = new Vector3(fSize, fSize, fSize);
         iconImg.sprite = sprite;
         if (isAll)
             countTxt.text = "All";

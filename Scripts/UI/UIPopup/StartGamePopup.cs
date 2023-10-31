@@ -88,7 +88,7 @@ public class StartGamePopup : UIPopup
             else
                 spriteName = level.lisGoal[i].elementType.ToString();
 
-            goalSignSlot.Init(UIManager.Instance.GetSprite(eAtlasType.Tile, spriteName), level.lisGoal[i].nCount, new Vector2(130, 130), _isAll);
+            goalSignSlot.Init(UIManager.Instance.GetSprite(eAtlasType.Tile, spriteName), level.lisGoal[i].nCount,1, _isAll);
             goalSignSlot.gameObject.SetActive(true);
             dicGoalSignSlot.Add(goalSignSlot.gameObject, goalSignSlot);
         }

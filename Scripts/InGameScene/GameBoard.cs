@@ -226,10 +226,6 @@ public class GameBoard : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ResetTile();
-        }
         if (InGameScene.instance.isPuase)
             return;
 

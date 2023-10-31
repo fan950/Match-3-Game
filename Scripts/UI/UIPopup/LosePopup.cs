@@ -48,7 +48,7 @@ public class LosePopup : UIPopup
             else
                 spriteName = level.lisGoal[i].elementType.ToString();
 
-            goalSignSlot.Init(UIManager.Instance.GetSprite(eAtlasType.Tile, spriteName), level.lisGoal[i].nCount, new Vector2(130, 130));
+            goalSignSlot.Init(UIManager.Instance.GetSprite(eAtlasType.Tile, spriteName), level.lisGoal[i].nCount,1.5f);
             goalSignSlot.gameObject.SetActive(true);
         }
     }
