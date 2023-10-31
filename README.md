@@ -2,7 +2,10 @@
 
 유니티로 개발한  Match 3 퍼즐게임 개발 포트폴리오
 
+# 유튜브 링크
 
+https://www.youtube.com/watch?v=AGMGpd-L96o
+영상에선 사운드가 없습니다.
 
 ## GameBoard.cs
 
