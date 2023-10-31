@@ -31,8 +31,6 @@ https://www.youtube.com/watch?v=AGMGpd-L96o
 
 
 
-***
-
 
 
 ### 이동
