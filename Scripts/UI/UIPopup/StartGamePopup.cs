@@ -71,6 +71,7 @@ public class StartGamePopup : UIPopup
 
         for (int i = 0; i < level.lisGoal.Count; ++i)
         {
+            bool _isAll = false;
             if (lisUnSlot.Count <= 0)
                 CreateSlot();
 
@@ -79,11 +80,15 @@ public class StartGamePopup : UIPopup
 
             string spriteName = string.Empty;
             if (level.lisGoal[i].tileType != eTileType.None)
+            {
                 spriteName = level.lisGoal[i].tileType.ToString();
+                if (level.lisGoal[i].tileType == eTileType.Chocolate)
+                    _isAll = true;
+            }
             else
                 spriteName = level.lisGoal[i].elementType.ToString();
 
-            goalSignSlot.Init(UIManager.Instance.GetSprite(eAtlasType.Tile, spriteName), level.lisGoal[i].nCount, new Vector2(130, 130));
+            goalSignSlot.Init(UIManager.Instance.GetSprite(eAtlasType.Tile, spriteName), level.lisGoal[i].nCount, new Vector2(130, 130), _isAll);
             goalSignSlot.gameObject.SetActive(true);
             dicGoalSignSlot.Add(goalSignSlot.gameObject, goalSignSlot);
         }

@@ -16,13 +16,13 @@ public class UITilePool : MonoBehaviour
     private const float fSizeUpSpeed = 6;
     private const float fSizeDownSpeed = 2;
 
-    private Action action;
+    private Action<Tile, Element> action;
     public void Init()
     {
         UITile_Pool.Init();
     }
 
-    public void CallUITile(bool isTile,Tile tile, Element element, Action action)
+    public void CallUITile(bool isTile, Tile tile, Element element, Action<Tile, Element> action)
     {
         this.action = action;
         GameObject _obj = UITile_Pool.GetObj();
@@ -37,13 +37,13 @@ public class UITilePool : MonoBehaviour
             dicImage[_obj].sprite = tile.spriteRenderer.sprite;
             _tempObj = tile.gameObject;
         }
-        else 
+        else
         {
             dicImage[_obj].sprite = element.spriteRenderer.sprite;
             _tempObj = element.gameObject;
         }
 
-        Vector3 targetPositoin = _tempObj.transform.position;     
+        Vector3 targetPositoin = _tempObj.transform.position;
         Vector3 screenPositoin = Camera.main.WorldToScreenPoint(targetPositoin);
         Vector2 screenPositoin2 = new Vector2(screenPositoin.x, screenPositoin.y);
         Vector2 anchoredPositoin;
@@ -51,10 +51,10 @@ public class UITilePool : MonoBehaviour
             canvas, screenPositoin2, Camera.main, out anchoredPositoin);
         dicImage[_obj].rectTransform.anchoredPosition = anchoredPositoin;
 
-        StartCoroutine(MoveTile(_obj));
+        StartCoroutine(MoveTile(_obj, tile,element));
     }
 
-    public IEnumerator MoveTile(GameObject obj)
+    public IEnumerator MoveTile(GameObject obj, Tile tile, Element element)
     {
         float _fSize = 1;
         while (true)
@@ -91,7 +91,7 @@ public class UITilePool : MonoBehaviour
             if (dicImage[obj].rectTransform.anchoredPosition == targetPos.anchoredPosition)
             {
                 if (action != null)
-                    action();
+                    action(tile, element);
 
                 UITile_Pool.ReturnObj(obj);
                 break;

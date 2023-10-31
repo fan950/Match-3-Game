@@ -593,16 +593,13 @@ public class GameBoard : MonoBehaviour
             }
         }
 
-        for (int i = arrTile.GetLength(0) - 1; i >= 0; --i)
+        for (int i = 0; i < arrTile.GetLength(0); ++i)
         {
             for (int j = 0; j < arrTile.GetLength(1); ++j)
             {
                 bool _isAdd = false;
                 Tile _tempTile = GetTile(j, i);
 
-                //if (((j - 1 >= 0 && j + 1 < arrTileType.GetLength(1) &&
-                //    (arrTileType[i, j - 1] == eTileType.None || arrTileType[i, j + 1] == eTileType.None)) ||
-                //    GetTile(j, i - 1) == null) &&
                 if (_tempTile != null && arrElement[i, j] == null)
                 {
                     while (true)
@@ -616,6 +613,12 @@ public class GameBoard : MonoBehaviour
 
                     if (_isAdd)
                     {
+                        if (GetTile(j, i - 1) != null || GetTile(j - 1, i - 1) != null || GetTile(j + 1, i - 1) != null)
+                        {
+                            i = -1;
+                            j = -1;
+                        }
+
                         if (!_lisTemp.Contains(_tempTile))
                             _lisTemp.Add(_tempTile);
                     }

@@ -64,7 +64,6 @@ public class InGameScene : MonoBehaviour
         uiApplyItemBg.SetActive(false);
 
         var jsonText = Resources.Load<TextAsset>("Level/" + GameManager.Instance.nSelectLevel);
-      //  var jsonText = Resources.Load<TextAsset>("Level/" + GameManager.Instance.nSelectLevel);
         level = JsonUtility.FromJson<Level>(jsonText.ToString());
 
         for (int i = 0; i < level.lisGoal.Count; ++i)
@@ -106,45 +105,45 @@ public class InGameScene : MonoBehaviour
         {
             if (level.lisGoal[i].tileType == tile.tileType || (element != null && level.lisGoal[i].elementType == element.elementType))
             {
-                uiTilePool.CallUITile(level.lisGoal[i].isTile, tile, element, delegate
-                  {
-                      for (int i = 0; i < level.lisGoal.Count; ++i)
-                      {
-                          if (level.lisGoal[i].tileType == tile.tileType || (element != null && level.lisGoal[i].elementType == element.elementType))
-                          {
-                              --level.lisGoal[i].nCount;
-
-                              if (barTop.dicGoalSignSlot.ContainsKey(level.lisGoal[i]))
-                              {
-                                  barTop.dicGoalSignSlot[level.lisGoal[i]].countTxt.text = level.lisGoal[i].nCount.ToString();
-                              }
-
-                              if (level.lisGoal[i].nCount <= 0)
-                              {
-                                  lisTempGoal.Add(level.lisGoal[i]);
-                              }
-                          }
-                      }
-
-                      if (lisTempGoal.Count > 0)
-                      {
-                          for (int i = 0; i < lisTempGoal.Count; ++i)
-                          {
-                              level.lisGoal.Remove(lisTempGoal[i]);
-                          }
-                      }
-
-                      if (level.lisGoal.Count <= 0)
-                      {
-                          isPuase = true;
-                          if (endGameCoro == null)
-                              endGameCoro = StartCoroutine(EndGame(true));
-                      }
-                  });
+                uiTilePool.CallUITile(level.lisGoal[i].isTile, tile, element, RemoveGoal);
             }
         }
     }
+    public void RemoveGoal(Tile tile, Element element)
+    {
+        for (int i = 0; i < level.lisGoal.Count; ++i)
+        {
+            if (level.lisGoal[i].tileType == tile.tileType || (element != null && level.lisGoal[i].elementType == element.elementType))
+            {
+                --level.lisGoal[i].nCount;
 
+                if (barTop.dicGoalSignSlot.ContainsKey(level.lisGoal[i]))
+                {
+                    barTop.dicGoalSignSlot[level.lisGoal[i]].countTxt.text = level.lisGoal[i].nCount.ToString();
+                }
+
+                if (level.lisGoal[i].nCount <= 0)
+                {
+                    lisTempGoal.Add(level.lisGoal[i]);
+                }
+            }
+        }
+
+        if (lisTempGoal.Count > 0)
+        {
+            for (int i = 0; i < lisTempGoal.Count; ++i)
+            {
+                level.lisGoal.Remove(lisTempGoal[i]);
+            }
+        }
+
+        if (level.lisGoal.Count <= 0)
+        {
+            isPuase = true;
+            if (endGameCoro == null)
+                endGameCoro = StartCoroutine(EndGame(true));
+        }
+    }
     public IEnumerator EndGame(bool isClear)
     {
         EndItemMode(false, false);
