@@ -7,12 +7,11 @@ using UnityEngine.UI;
 public class UITilePool : MonoBehaviour
 {
     public RectTransform canvas;
-    public RectTransform targetPos;
 
     [SerializeField] private ObjectPool UITile_Pool;
     private Dictionary<GameObject, Image> dicImage = new Dictionary<GameObject, Image>();
 
-    private const float fMoveSpeed = 1300;
+    private const float fMoveSpeed = 28;
     private const float fSizeUpSpeed = 6;
     private const float fSizeDownSpeed = 2;
 
@@ -22,7 +21,7 @@ public class UITilePool : MonoBehaviour
         UITile_Pool.Init();
     }
 
-    public void CallUITile(bool isTile, Tile tile, Element element, Action<Tile, Element> action)
+    public void CallUITile(bool isTile, Goal goal, Tile tile, Element element, Action<Tile, Element> action)
     {
         this.action = action;
         GameObject _obj = UITile_Pool.GetObj();
@@ -51,11 +50,13 @@ public class UITilePool : MonoBehaviour
             canvas, screenPositoin2, Camera.main, out anchoredPositoin);
         dicImage[_obj].rectTransform.anchoredPosition = anchoredPositoin;
 
-        StartCoroutine(MoveTile(_obj, tile,element));
+        StartCoroutine(MoveTile(_obj, goal, tile, element));
     }
 
-    public IEnumerator MoveTile(GameObject obj, Tile tile, Element element)
+    public IEnumerator MoveTile(GameObject obj, Goal goal, Tile tile, Element element)
     {
+        GameObject _target = InGameScene.instance.GetGoalSlot(goal).gameObject;
+
         float _fSize = 1;
         while (true)
         {
@@ -86,9 +87,10 @@ public class UITilePool : MonoBehaviour
             else
                 obj.transform.localScale = Vector3.one;
 
-            dicImage[obj].rectTransform.anchoredPosition = Vector2.MoveTowards(dicImage[obj].rectTransform.anchoredPosition, targetPos.anchoredPosition, fMoveSpeed * Time.deltaTime);
+            dicImage[obj].transform.position = Vector2.MoveTowards(dicImage[obj].transform.position, _target.transform.position, fMoveSpeed * Time.deltaTime);
 
-            if (dicImage[obj].rectTransform.anchoredPosition == targetPos.anchoredPosition)
+            float _fDis = Vector2.Distance(dicImage[obj].transform.position, _target.transform.position);
+            if (_fDis <= 0.5f)
             {
                 if (action != null)
                     action(tile, element);

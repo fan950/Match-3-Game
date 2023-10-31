@@ -105,9 +105,13 @@ public class InGameScene : MonoBehaviour
         {
             if (level.lisGoal[i].tileType == tile.tileType || (element != null && level.lisGoal[i].elementType == element.elementType))
             {
-                uiTilePool.CallUITile(level.lisGoal[i].isTile, tile, element, RemoveGoal);
+                uiTilePool.CallUITile(level.lisGoal[i].isTile, level.lisGoal[i], tile, element, RemoveGoal);
             }
         }
+    }
+    public GoalSignSlot GetGoalSlot(Goal goal) 
+    {
+        return barTop.dicGoalSignSlot[goal];
     }
     public void RemoveGoal(Tile tile, Element element)
     {
