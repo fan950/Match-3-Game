@@ -9,7 +9,7 @@
 인게임에서 중요 스크립트로서 간략하게 함수 및 코루틴의 기능을 설명
 
 
-### 목차
+### 기능
 - 이동
 - 폭발
 - 생성
@@ -140,7 +140,7 @@ NextTile
     타일의 이동 경로를 정하는 함수 => 아래, 오른쪽 아래, 왼쪽 아래 순서
     
 ```
-   public bool NextTile(Tile tile)
+    public bool NextTile(Tile tile)
     {
         Tile _tempTile = tile;
 
@@ -232,14 +232,14 @@ ApplyGravity
             }
         }
 
-        for (int i = arrTile.GetLength(0) - 1; i >= 0; --i)
+        for (int i = 0; i < arrTile.GetLength(0); ++i)
         {
             for (int j = 0; j < arrTile.GetLength(1); ++j)
             {
                 bool _isAdd = false;
                 Tile _tempTile = GetTile(j, i);
 
-                if (GetTile(j, i - 1) == null && _tempTile != null && arrElement[i, j] == null)
+                if (_tempTile != null && arrElement[i, j] == null)
                 {
                     while (true)
                     {
@@ -252,6 +252,12 @@ ApplyGravity
 
                     if (_isAdd)
                     {
+                        if (GetTile(j, i - 1) != null || GetTile(j - 1, i - 1) != null || GetTile(j + 1, i - 1) != null)
+                        {
+                            i = -1;
+                            j = -1;
+                        }
+
                         if (!_lisTemp.Contains(_tempTile))
                             _lisTemp.Add(_tempTile);
                     }
@@ -306,6 +312,8 @@ ApplyGravity
 
         GravityCoro = null;
     }
+
+
 ```
 
 </details>
@@ -322,7 +330,7 @@ Explode
 
 
  ```
-    public void Explode()
+   public void Explode()
     {
         if (InGameScene.instance.isEnd)
             return;
