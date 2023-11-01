@@ -17,7 +17,7 @@ https://docs.google.com/document/d/1qWceG5DIkau_78m_Yc96QevEQSeNzI4F/edit?usp=sh
 
 # 유튜브 링크
 
-https://www.youtube.com/watch?v=AGMGpd-L96o
+https://youtu.be/_DLH_W1OpGs
 
 
 
