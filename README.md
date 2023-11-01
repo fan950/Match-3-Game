@@ -5,7 +5,7 @@
 
 
 
-# 포트폴리오 설명
+# 프로젝트 설명
 
 https://docs.google.com/document/d/1qWceG5DIkau_78m_Yc96QevEQSeNzI4F/edit?usp=sharing&ouid=100275039382050935181&rtpof=true&sd=true
 
