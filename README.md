@@ -42,7 +42,7 @@ https://www.youtube.com/watch?v=AGMGpd-L96o
 ### 이동
 MoveUpdate
 <details> 
-    이동 할 타일을 lisTileMove 리스트에 넣고 이동하고 성공, 실패를 판단하는 코루틴
+    이동 할 타일을 lisTileMove 리스트에 넣고 이동하고 Win, Lose를 판단하는 코루틴
     
 ```
    public IEnumerator MoveUpdate()
